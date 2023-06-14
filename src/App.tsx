@@ -5,20 +5,19 @@ import CssBaseline from '@mui/material/CssBaseline'
 import {currenciesAPI} from './api/currenciesAPI'
 import {Navbar} from './components/Navbar'
 import {CurrencyType} from './types/types'
-import {CurrenciesPage} from './components/CurrenciesPage'
 import {Preloader} from './components/common/Preloader'
+import {CurrenciesPage} from './components/CurrenciesPage'
 
 export function App() {
-    const [fullCurrency, setFullCurrency] = useState<CurrencyType[] | null>(null)
+    const [fullCurrency, setFullCurrency] = useState<CurrencyType[]>([])
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        const fetchData = async () => {
-            const data = await currenciesAPI.getAllCurrencies()
+        currenciesAPI.getAllCurrencies().then(data =>
             setFullCurrency(data)
-        }
-        fetchData()
-        setLoading(false)
+        ).then(() => {
+            setLoading(false)
+        })
     }, [])
 
     return (

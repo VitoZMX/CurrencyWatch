@@ -11,14 +11,17 @@ type CurrencyRateChartPropsType = {
 export function CurrencyRateChart({id}: CurrencyRateChartPropsType) {
     const [currencyRateChart, setCurrencyRateChart] = React.useState<CurrencyRateChartType[] | null>(null)
 
-    const fetchData = async (id: number) => {
-        const data = await currenciesAPI.getRateCurrencyDynamics(id)
+    const fetchData = async (id: number, from: string, to: string) => {
+        const data = await currenciesAPI.getRateCurrencyDynamics(id, from, to)
+
         setCurrencyRateChart(data)
         console.log(data)
     }
 
     useEffect(() => {
-        fetchData(id)
+        let x = new Date()
+        fetchData(id, new Date('1990-03-11T02:30:00.000').toISOString().split('T')[0], x.toISOString().split('T')[0])
+        // fetchData(id, new Date('2000-03-11T02:30:00.000').toISOString().split('T')[0], new Date('2010-03-11T02:30:00.000').toISOString().split('T')[0])
     }, [id])
 
     return (
