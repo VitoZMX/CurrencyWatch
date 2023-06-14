@@ -6,7 +6,7 @@ import {currenciesAPI} from './api/currenciesAPI'
 import {Navbar} from './components/Navbar'
 import {CurrencyType} from './types/types'
 import {Preloader} from './components/common/Preloader'
-import {CurrenciesPage} from './components/CurrenciesPage'
+import {CurrenciesPage} from './components/CurrenciesPage/CurrenciesPage'
 
 export function App() {
     const [fullCurrency, setFullCurrency] = useState<CurrencyType[]>([])

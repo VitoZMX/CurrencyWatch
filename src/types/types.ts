@@ -1,3 +1,5 @@
+import * as React from 'react'
+
 export type CurrencyType = {
     Cur_ID: number
     Cur_ParentID: number
@@ -31,4 +33,26 @@ export type CurrencyRateChartType = {
     Cur_ID: number
     Date: string
     Cur_OfficialRate: number
+}
+
+export type Order = 'asc' | 'desc'
+
+export type CurrencyProps = {
+    currency: CurrencyType[];
+}
+
+export type EnhancedTableProps = {
+    numSelected: number;
+    onRequestSort: (event: React.MouseEvent<unknown>, property: string) => void;
+    onSelectAllClick?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    order: Order;
+    orderBy: string;
+    rowCount: number;
+}
+
+export type  HeadCellType = {
+    disablePadding: boolean;
+    id: string;
+    label: string;
+    numeric: boolean;
 }
