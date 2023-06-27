@@ -1,4 +1,5 @@
 import * as React from 'react'
+import {useState} from 'react'
 import Box from '@mui/material/Box'
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
@@ -10,8 +11,9 @@ import Paper from '@mui/material/Paper'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import Switch from '@mui/material/Switch'
 import {Container} from '@material-ui/core'
-import {CurrencyProps, Order} from '../../types/types'
+import {CurrencyProps, DataCurrencyToSlidePageType, Order} from '../../types/types'
 import {EnhancedTableHead} from './EnhancedTableHead/EnhancedTableHead'
+import {PageSlide} from '../PageSlide'
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
     if (b[orderBy] < a[orderBy]) {
@@ -48,14 +50,14 @@ function stableSort<T>(array: readonly T[], comparator: (a: T, b: T) => number) 
 }
 
 export function CurrenciesPage({currency}: CurrencyProps) {
-    const [order, setOrder] = React.useState<Order>('asc')
-    const [orderBy, setOrderBy] = React.useState<string>('calories')
-    const [selected, setSelected] = React.useState<readonly string[]>([])
-    const [page, setPage] = React.useState(0)
-    const [dense, setDense] = React.useState(false)
-    const [rowsPerPage, setRowsPerPage] = React.useState(5)
-
-    console.log(currency)
+    const [showPageSlideData, setShowPageSlideData] = useState(false)
+    const [order, setOrder] = useState<Order>('asc')
+    const [orderBy, setOrderBy] = useState<string>('calories')
+    const [selected, setSelected] = useState<readonly string[]>([])
+    const [page, setPage] = useState(0)
+    const [dense, setDense] = useState(false)
+    const [rowsPerPage, setRowsPerPage] = useState(5)
+    const [dataCurrency, setDataCurrency] = useState<DataCurrencyToSlidePageType | null>(null)
 
     const handleRequestSort = (
         event: React.MouseEvent<unknown>,
@@ -66,36 +68,25 @@ export function CurrenciesPage({currency}: CurrencyProps) {
         setOrderBy(property)
     }
 
-    /*const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
-        if (event.target.checked) {
-            const newSelected = currency.map((n) => n.Cur_Name)
-            setSelected(newSelected)
-            return
-        }
-        setSelected([])
-    }
-
-    const handleClick = (event: React.MouseEvent<unknown>, name: string) => {
-        const selectedIndex = selected.indexOf(name)
-        let newSelected: readonly string[] = []
-
-        if (selectedIndex === -1) {
-            newSelected = newSelected.concat(selected, name)
-        } else if (selectedIndex === 0) {
-            newSelected = newSelected.concat(selected.slice(1))
-        } else if (selectedIndex === selected.length - 1) {
-            newSelected = newSelected.concat(selected.slice(0, -1))
-        } else if (selectedIndex > 0) {
-            newSelected = newSelected.concat(
-                selected.slice(0, selectedIndex),
-                selected.slice(selectedIndex + 1),
-            )
-        }
-        setSelected(newSelected)
-    }*/
-
     const handleChangePage = (event: unknown, newPage: number) => {
         setPage(newPage)
+    }
+
+    const isOpenSlidePage = () => {
+        setShowPageSlideData(!showPageSlideData)
+    }
+
+    const handleClick = (code: string, id: number, name: string, start: string, end: string) => {
+        setDataCurrency({
+            Cur_ID: id,
+            Cur_Code: code,
+            Cur_Name: name,
+            Cur_DateStart: start,
+            Cur_DateEnd: end
+        })
+        if (dataCurrency) {
+            isOpenSlidePage()
+        }
     }
 
     const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -122,6 +113,8 @@ export function CurrenciesPage({currency}: CurrencyProps) {
 
     return (
         <Container>
+            {!showPageSlideData && dataCurrency &&
+                <PageSlide title={`Информация о валюте: `} data={dataCurrency} isOpen={isOpenSlidePage}/>}
             <Box sx={{width: '100%'}}>
                 <Paper sx={{width: '100%', mb: 2}}>
                     <TableContainer>
@@ -134,7 +127,6 @@ export function CurrenciesPage({currency}: CurrencyProps) {
                                 numSelected={selected.length}
                                 order={order}
                                 orderBy={orderBy}
-                                /* onSelectAllClick={handleSelectAllClick}*/
                                 onRequestSort={handleRequestSort}
                                 rowCount={currency.length}
                             />
@@ -143,16 +135,17 @@ export function CurrenciesPage({currency}: CurrencyProps) {
                                 {visibleRows.map((row, index) => {
                                     const isItemSelected = isSelected(row.Cur_Name)
                                     const labelId = `enhanced-table-checkbox-${index}`
+                                    const dateEnd = new Date(row.Cur_DateEnd).toISOString().split('T')[0]
+                                    const dateStart = new Date(row.Cur_DateStart).toISOString().split('T')[0]
 
                                     return (
                                         <TableRow
                                             hover
-                                            /*onClick={(event) => handleClick(event, row.Cur_Name)}*/
+                                            onClick={() => handleClick(row.Cur_Code, row.Cur_ID, row.Cur_Name, dateStart, dateEnd)}
                                             role="button"
                                             aria-checked={isItemSelected}
                                             tabIndex={-1}
                                             key={row.Cur_Name}
-                                            /*selected={isItemSelected}*/
                                             sx={{cursor: 'pointer'}}
                                         >
                                             <TableCell
@@ -163,9 +156,9 @@ export function CurrenciesPage({currency}: CurrencyProps) {
                                                 {row.Cur_Name}
                                             </TableCell>
                                             <TableCell align="right">{row.Cur_Code}</TableCell>
-                                            <TableCell align="right">{row.Cur_QuotName}</TableCell>
                                             <TableCell align="right">{row.Cur_ID}</TableCell>
-                                            <TableCell align="right">{row.Cur_DateEnd}</TableCell>
+                                            <TableCell align="right">{row.Cur_QuotName}</TableCell>
+                                            <TableCell align="right">{dateEnd}</TableCell>
                                         </TableRow>
                                     )
                                 })}
@@ -182,10 +175,11 @@ export function CurrenciesPage({currency}: CurrencyProps) {
                         </Table>
                     </TableContainer>
                     <TablePagination
-                        rowsPerPageOptions={[5, 10, 25]}
+                        rowsPerPageOptions={[5, 10, 25, 35, 50]}
                         component="div"
                         count={currency.length}
                         rowsPerPage={rowsPerPage}
+                        labelRowsPerPage="Число строк:"
                         page={page}
                         onPageChange={handleChangePage}
                         onRowsPerPageChange={handleChangeRowsPerPage}
