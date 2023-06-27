@@ -1,15 +1,18 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import {CartesianGrid, Legend, Line, LineChart, Tooltip, XAxis, YAxis} from 'recharts'
 import {currenciesAPI} from '../api/currenciesAPI'
 import {CurrencyRateChartType} from '../types/types'
-import {Preloader} from './common/Preloader'
+import Typography from '@mui/material/Typography'
 
 type CurrencyRateChartPropsType = {
     id: number
+    startDate: string
+    endDate: string
 }
 
-export function CurrencyRateChart({id}: CurrencyRateChartPropsType) {
+export function CurrencyRateChart({id, startDate, endDate}: CurrencyRateChartPropsType) {
     const [currencyRateChart, setCurrencyRateChart] = React.useState<CurrencyRateChartType[] | null>(null)
+    const [loading, setLoading] = useState(true)
 
     const fetchData = async (id: number, from: string, to: string) => {
         const data = await currenciesAPI.getRateCurrencyDynamics(id, from, to)
@@ -18,23 +21,35 @@ export function CurrencyRateChart({id}: CurrencyRateChartPropsType) {
         console.log(data)
     }
 
-    useEffect(() => {
+    /*useEffect(() => {
         let x = new Date()
         fetchData(id, new Date('1990-03-11T02:30:00.000').toISOString().split('T')[0], x.toISOString().split('T')[0])
+        //fetchData(id, new Date('1990-03-11T02:30:00.000').toISOString().split('T')[0], x.toISOString().split('T')[0])
         // fetchData(id, new Date('2000-03-11T02:30:00.000').toISOString().split('T')[0], new Date('2010-03-11T02:30:00.000').toISOString().split('T')[0])
+    }, [id])*/
+
+    useEffect(() => {
+        currenciesAPI.getRateCurrencyDynamics(id, new Date(startDate).toISOString(), new Date(endDate).toISOString())
+            .then(res =>
+                setCurrencyRateChart(res)
+            ).then(() => setLoading(false))
     }, [id])
+
+    if (loading) {
+        return <div>Загрузка...</div>
+    }
 
     return (
         <div>
-            {currencyRateChart ? (
+            {currencyRateChart && currencyRateChart.length > 0 ? (
                 <LineChart
-                    width={700}
+                    width={570}
                     height={300}
                     data={currencyRateChart}
                     margin={{
                         top: 30,
-                        right: 30,
-                        left: 20,
+                        right: 20,
+                        left: 0,
                         bottom: 20
                     }}
                 >
@@ -50,7 +65,8 @@ export function CurrencyRateChart({id}: CurrencyRateChartPropsType) {
                         activeDot={{r: 8}}
                     />
                 </LineChart>
-            ) : (<Preloader key={'preloader'}/>)}
+            ) : (<Typography variant="body1" style={{color: '#ee8c0c'}}>Данных по курсу на этот промежуток времени не
+                найдено!</Typography>)}
         </div>
     )
 }

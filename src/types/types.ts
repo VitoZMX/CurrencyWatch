@@ -37,6 +37,14 @@ export type CurrencyRateChartType = {
 
 export type Order = 'asc' | 'desc'
 
+export type DataCurrencyToSlidePageType = {
+    Cur_Code: string,
+    Cur_ID:number,
+    Cur_Name: string,
+    Cur_DateStart: string,
+    Cur_DateEnd: string
+}
+
 export type CurrencyProps = {
     currency: CurrencyType[];
 }

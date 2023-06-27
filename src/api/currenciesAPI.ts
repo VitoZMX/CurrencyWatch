@@ -15,6 +15,12 @@ export const currenciesAPI = {
         return instance.get<RateType>(`rates/${Cur_Code}?parammode=1`).then(res => res.data)
     },
     async getRateCurrencyDynamics(ID: number, from: string, to: string) {
-        return instance.get<CurrencyRateChartType[]>(`rates/Dynamics/${ID}?startDate=${from}&endDate=${to}`).then(res => res.data)
+        return instance.get<CurrencyRateChartType[]>(`rates/Dynamics/${ID}?startDate=${from}&endDate=${to}`).then(response => {
+            const data = response.data
+            data.forEach((item) => {
+                item.Date = item.Date.split('T')[0]
+            })
+            return data
+        })
     }
 }

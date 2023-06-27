@@ -21,22 +21,22 @@ const headCells: readonly HeadCellType[] = [
         label: 'Код валюты',
     },
     {
+        id: 'ID',
+        numeric: true,
+        disablePadding: false,
+        label: 'ID валюты',
+    },
+    {
         id: 'row3',
         numeric: true,
         disablePadding: false,
         label: 'Количество единиц и буквенный код валюты',
     },
     {
-        id: 'row4',
-        numeric: true,
-        disablePadding: false,
-        label: 'ID валюты',
-    },
-    {
         id: 'row5',
         numeric: true,
         disablePadding: false,
-        label: 'Валюта курс',
+        label: 'Дата исключения валюты из перечня валют',
     },
 ]
 
