@@ -11,11 +11,11 @@ import Paper from '@mui/material/Paper'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import Switch from '@mui/material/Switch'
 import {Container} from '@material-ui/core'
-import {CurrencyProps, DataCurrencyToSlidePageType, Order} from '../../types/types'
+import {CurrencyProps, CurrencyType, DataCurrencyToSlidePageType, Order} from '../../types/types'
 import {EnhancedTableHead} from './EnhancedTableHead/EnhancedTableHead'
 import {PageSlide} from '../PageSlide'
 
-function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
+function descendingComparator<T extends Record<Key, number | string>, Key extends keyof any>(a: T, b: T, orderBy: Key,) {
     if (b[orderBy] < a[orderBy]) {
         return -1
     }
@@ -28,10 +28,7 @@ function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
 function getComparator<Key extends keyof any>(
     order: Order,
     orderBy: Key,
-): (
-    a: { [key in Key]: number | string },
-    b: { [key in Key]: number | string },
-) => number {
+): (a: { [key in Key]: number | string }, b: { [key in Key]: number | string }) => number {
     return order === 'desc'
         ? (a, b) => descendingComparator(a, b, orderBy)
         : (a, b) => -descendingComparator(a, b, orderBy)
@@ -46,23 +43,20 @@ function stableSort<T>(array: readonly T[], comparator: (a: T, b: T) => number) 
         }
         return a[1] - b[1]
     })
-    return stabilizedThis.map((el) => el[0])
+    return stabilizedThis.map((el) => el[0]) as T[]
 }
 
 export function CurrenciesPage({currency}: CurrencyProps) {
     const [showPageSlideData, setShowPageSlideData] = useState(false)
     const [order, setOrder] = useState<Order>('asc')
-    const [orderBy, setOrderBy] = useState<string>('calories')
+    const [orderBy, setOrderBy] = useState<keyof CurrencyType>('Cur_Name')
     const [selected, setSelected] = useState<readonly string[]>([])
     const [page, setPage] = useState(0)
     const [dense, setDense] = useState(false)
     const [rowsPerPage, setRowsPerPage] = useState(5)
     const [dataCurrency, setDataCurrency] = useState<DataCurrencyToSlidePageType | null>(null)
 
-    const handleRequestSort = (
-        event: React.MouseEvent<unknown>,
-        property: string,
-    ) => {
+    const handleRequestSort = (property: keyof CurrencyType) => {
         const isAsc = orderBy === property && order === 'asc'
         setOrder(isAsc ? 'desc' : 'asc')
         setOrderBy(property)
@@ -103,11 +97,7 @@ export function CurrenciesPage({currency}: CurrencyProps) {
     const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - currency.length) : 0
 
     const visibleRows = React.useMemo(
-        () =>
-            stableSort(currency, getComparator(order, orderBy)).slice(
-                page * rowsPerPage,
-                page * rowsPerPage + rowsPerPage,
-            ),
+        () => stableSort(currency, getComparator(order, orderBy)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
         [currency, order, orderBy, page, rowsPerPage],
     )
 
@@ -130,7 +120,6 @@ export function CurrenciesPage({currency}: CurrencyProps) {
                                 onRequestSort={handleRequestSort}
                                 rowCount={currency.length}
                             />
-
                             <TableBody>
                                 {visibleRows.map((row, index) => {
                                     const isItemSelected = isSelected(row.Cur_Name)
@@ -145,7 +134,7 @@ export function CurrenciesPage({currency}: CurrencyProps) {
                                             role="button"
                                             aria-checked={isItemSelected}
                                             tabIndex={-1}
-                                            key={row.Cur_Name}
+                                            key={`${row.Cur_Name}${row.Cur_ID}`}
                                             sx={{cursor: 'pointer'}}
                                         >
                                             <TableCell
@@ -175,7 +164,7 @@ export function CurrenciesPage({currency}: CurrencyProps) {
                         </Table>
                     </TableContainer>
                     <TablePagination
-                        rowsPerPageOptions={[5, 10, 25, 35, 50]}
+                        rowsPerPageOptions={[5, 10, 25, 35, 50, currency.length]}
                         component="div"
                         count={currency.length}
                         rowsPerPage={rowsPerPage}
@@ -185,10 +174,7 @@ export function CurrenciesPage({currency}: CurrencyProps) {
                         onRowsPerPageChange={handleChangeRowsPerPage}
                     />
                 </Paper>
-                <FormControlLabel
-                    control={<Switch checked={dense} onChange={handleChangeDense}/>}
-                    label="Compact"
-                />
+                <FormControlLabel control={<Switch checked={dense} onChange={handleChangeDense}/>} label="Compact"/>
             </Box>
         </Container>
     )

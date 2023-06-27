@@ -5,35 +5,35 @@ import TableCell from '@mui/material/TableCell'
 import TableSortLabel from '@mui/material/TableSortLabel'
 import Box from '@mui/material/Box'
 import {visuallyHidden} from '@mui/utils'
-import {EnhancedTableProps, HeadCellType} from '../../../types/types'
+import {CurrencyType, EnhancedTableProps, HeadCellType} from '../../../types/types'
 
 const headCells: readonly HeadCellType[] = [
     {
-        id: 'name',
+        id: 'Cur_Name',
         numeric: false,
         disablePadding: false,
         label: 'Наименование иностранной валюты',
     },
     {
-        id: 'code',
+        id: 'Cur_Code',
         numeric: true,
         disablePadding: false,
         label: 'Код валюты',
     },
     {
-        id: 'ID',
+        id: 'Cur_ID',
         numeric: true,
         disablePadding: false,
         label: 'ID валюты',
     },
     {
-        id: 'row3',
+        id: 'Cur_QuotName',
         numeric: true,
         disablePadding: false,
         label: 'Количество единиц и буквенный код валюты',
     },
     {
-        id: 'row5',
+        id: 'Cur_DateEnd',
         numeric: true,
         disablePadding: false,
         label: 'Дата исключения валюты из перечня валют',
@@ -43,10 +43,9 @@ const headCells: readonly HeadCellType[] = [
 export function EnhancedTableHead(props: EnhancedTableProps) {
     const {onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort} = props
 
-    const createSortHandler =
-        (property: string) => (event: React.MouseEvent<unknown>) => {
-            onRequestSort(event, property)
-        }
+    const createSortHandler = (property: keyof CurrencyType) => (event: React.MouseEvent<unknown>) => {
+        onRequestSort(property)
+    }
 
     return (
         <TableHead>

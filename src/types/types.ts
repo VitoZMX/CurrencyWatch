@@ -39,7 +39,7 @@ export type Order = 'asc' | 'desc'
 
 export type DataCurrencyToSlidePageType = {
     Cur_Code: string,
-    Cur_ID:number,
+    Cur_ID: number,
     Cur_Name: string,
     Cur_DateStart: string,
     Cur_DateEnd: string
@@ -51,16 +51,16 @@ export type CurrencyProps = {
 
 export type EnhancedTableProps = {
     numSelected: number;
-    onRequestSort: (event: React.MouseEvent<unknown>, property: string) => void;
+    onRequestSort: (property: keyof CurrencyType) => void;
     onSelectAllClick?: (event: React.ChangeEvent<HTMLInputElement>) => void;
     order: Order;
-    orderBy: string;
+    orderBy: keyof CurrencyType;
     rowCount: number;
 }
 
 export type  HeadCellType = {
     disablePadding: boolean;
-    id: string;
+    id: keyof CurrencyType;
     label: string;
     numeric: boolean;
 }
