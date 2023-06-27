@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/currency-watch/static/css/main.073c9b0a.css",
-    "main.js": "/currency-watch/static/js/main.2140fde9.js",
+    "main.js": "/currency-watch/static/js/main.a96d0e24.js",
     "static/js/787.e2ccf055.chunk.js": "/currency-watch/static/js/787.e2ccf055.chunk.js",
     "static/media/preloader.svg": "/currency-watch/static/media/preloader.add43e92c7a252f319550856e5d4bad7.svg",
     "index.html": "/currency-watch/index.html",
     "main.073c9b0a.css.map": "/currency-watch/static/css/main.073c9b0a.css.map",
-    "main.2140fde9.js.map": "/currency-watch/static/js/main.2140fde9.js.map",
+    "main.a96d0e24.js.map": "/currency-watch/static/js/main.a96d0e24.js.map",
     "787.e2ccf055.chunk.js.map": "/currency-watch/static/js/787.e2ccf055.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.073c9b0a.css",
-    "static/js/main.2140fde9.js"
+    "static/js/main.a96d0e24.js"
   ]
 }
