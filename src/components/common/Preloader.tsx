@@ -3,11 +3,15 @@ import preloader from '../../assets/image/preloader.svg'
 import {Container, Grid} from '@material-ui/core'
 import Box from '@mui/material/Box'
 
-export const Preloader: React.FC = () => {
+type PreloaderPropsType = {
+    mini?: boolean
+}
+
+export const Preloader: React.FC<PreloaderPropsType> = ({mini = false}) => {
     return (
         <Container>
             <Grid container
-                  style={{height: window.innerHeight - 50}}
+                  style={!mini ? {height: window.innerHeight - 50} : undefined}
                   alignItems={'center'}
                   justifyContent={'center'}
             >
@@ -15,7 +19,9 @@ export const Preloader: React.FC = () => {
                       alignItems={'center'}
                       direction={'column'}>
                     <Box p={5}>
-                        <img alt={'preloader'} style={{width: 300}} src={preloader}/>
+                        <img alt={'preloader'}
+                             style={!mini ? {width: 200} : {width: 120}}
+                             src={preloader}/>
                     </Box>
                 </Grid>
             </Grid>
