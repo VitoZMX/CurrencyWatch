@@ -53,7 +53,7 @@ export function CurrenciesPage({currency}: CurrencyProps) {
     const [selected, setSelected] = useState<readonly string[]>([])
     const [page, setPage] = useState(0)
     const [dense, setDense] = useState(false)
-    const [rowsPerPage, setRowsPerPage] = useState(5)
+    const [rowsPerPage, setRowsPerPage] = useState(7)
     const [dataCurrency, setDataCurrency] = useState<DataCurrencyToSlidePageType | null>(null)
 
     const handleRequestSort = (property: keyof CurrencyType) => {
@@ -164,7 +164,7 @@ export function CurrenciesPage({currency}: CurrencyProps) {
                         </Table>
                     </TableContainer>
                     <TablePagination
-                        rowsPerPageOptions={[5, 10, 25, 35, 50, currency.length]}
+                        rowsPerPageOptions={[7, 20, 40, 80, 100, currency.length]}
                         component="div"
                         count={currency.length}
                         rowsPerPage={rowsPerPage}

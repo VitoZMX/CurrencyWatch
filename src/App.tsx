@@ -13,10 +13,24 @@ export function App() {
     const [fullCurrency, setFullCurrency] = useState<CurrencyType[]>([])
     const [loading, setLoading] = useState(true)
 
+    const colorsTheme: string[] = ['#8884d8', '#eff0ee', '#7fc2db', '#248ab8', '#01314b']
+
     const theme = createTheme({
         palette: {
+            primary: {
+                main: '#248ab8',
+            },
             background: {
-                default: '#e0e5ea'
+                default: '#e0e5ea',
+            },
+        },
+        components: {
+            MuiAppBar: {
+                styleOverrides: {
+                    root: {
+                        backgroundColor: '#01314b', // замените на ваш желаемый цвет фона AppBar
+                    },
+                },
             },
         },
     })

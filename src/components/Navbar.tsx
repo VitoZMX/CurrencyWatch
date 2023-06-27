@@ -3,7 +3,6 @@ import AppBar from '@mui/material/AppBar'
 import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
-import Button from '@mui/material/Button'
 import Container from '@mui/material/Container'
 
 export function Navbar() {
@@ -15,6 +14,7 @@ export function Navbar() {
                         <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
                             CurrencyWatch
                         </Typography>
+                        {/*<img alt={'logo'} style={{width: 50}} src={logo}/>*/}
                         {/*<Button color="inherit">All currencies</Button>*/}
                     </Toolbar>
                 </Container>
