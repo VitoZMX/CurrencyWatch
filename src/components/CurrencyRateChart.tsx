@@ -20,7 +20,7 @@ export function CurrencyRateChart({id, startDate, endDate}: CurrencyRateChartPro
             .then(res =>
                 setCurrencyRateChart(res)
             ).then(() => setLoading(false))
-    }, [id])
+    }, [id, startDate, endDate])
 
     if (loading) {
         return <Preloader mini={true}/>
@@ -40,7 +40,7 @@ export function CurrencyRateChart({id, startDate, endDate}: CurrencyRateChartPro
                         bottom: 20
                     }}
                 >
-                    <CartesianGrid strokeDasharray="3 3"/>
+                    <CartesianGrid strokeDasharray="4 4"/>
                     <XAxis dataKey="Date"/>
                     <YAxis/>
                     <Tooltip/>

@@ -26,11 +26,9 @@ type PageSlidePropsType = {
     isOpen: Function
 }
 
-
 export function PageSlide(props: PageSlidePropsType) {
-
     const handleClose = () => {
-        props.isOpen(123)
+        props.isOpen()
     }
 
     return (
@@ -47,15 +45,18 @@ export function PageSlide(props: PageSlidePropsType) {
                     <DialogContentText id="slide-page">
                         {props.data.Cur_Name}
                     </DialogContentText>
+                    <Typography variant="body1">ID валюты: {props.data.Cur_ID}</Typography>
                     <Typography variant="body1">Код валюты: {props.data.Cur_Code}</Typography>
                     <Typography variant="body1">Дата начала использования
                         валюты: {props.data.Cur_DateStart}</Typography>
                     <Typography variant="body1">Дата окончания использования
                         валюты: {props.data.Cur_DateEnd}</Typography>
-                    <CurrencyRateChart id={props.data.Cur_ID} startDate={props.data.Cur_DateStart} endDate={props.data.Cur_DateEnd}/>
+                    <CurrencyRateChart id={props.data.Cur_ID} startDate={props.data.Cur_DateStart}
+                                       endDate={props.data.Cur_DateEnd}/>
                 </DialogContent>
                 <DialogActions style={{display: 'flex', justifyContent: 'space-between'}}>
-                    <Button variant="outlined" onClick={()=>{}}>Открыть страницу с данными о этой валюте</Button>
+                    <Button variant="outlined" onClick={() => {
+                    }}>Открыть страницу с данными о этой валюте</Button>
                     <Button onClick={handleClose}>OK</Button>
                 </DialogActions>
             </Dialog>

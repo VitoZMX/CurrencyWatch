@@ -12,31 +12,31 @@ const headCells: readonly HeadCellType[] = [
         id: 'Cur_Name',
         numeric: false,
         disablePadding: false,
-        label: 'Наименование иностранной валюты',
+        label: 'Наименование валюты',
     },
     {
         id: 'Cur_Code',
         numeric: true,
         disablePadding: false,
-        label: 'Код валюты',
+        label: 'Код валюты',
     },
     {
         id: 'Cur_ID',
         numeric: true,
         disablePadding: false,
-        label: 'ID валюты',
+        label: 'ID валюты',
     },
     {
         id: 'Cur_QuotName',
         numeric: true,
         disablePadding: false,
-        label: 'Количество единиц и буквенный код валюты',
+        label: 'Количество единиц и буквенный код валюты',
     },
     {
         id: 'Cur_DateEnd',
         numeric: true,
         disablePadding: false,
-        label: 'Дата исключения валюты из перечня валют',
+        label: 'Дата исключения валюты из перечня',
     },
 ]
 

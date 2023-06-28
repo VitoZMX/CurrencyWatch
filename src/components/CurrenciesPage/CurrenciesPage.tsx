@@ -124,8 +124,8 @@ export function CurrenciesPage({currency}: CurrencyProps) {
                                 {visibleRows.map((row, index) => {
                                     const isItemSelected = isSelected(row.Cur_Name)
                                     const labelId = `enhanced-table-checkbox-${index}`
-                                    const dateEnd = new Date(row.Cur_DateEnd).toISOString().split('T')[0]
-                                    const dateStart = new Date(row.Cur_DateStart).toISOString().split('T')[0]
+                                    const dateEnd = row.Cur_DateEnd.split('T')[0]
+                                    const dateStart = row.Cur_DateStart.split('T')[0]
 
                                     return (
                                         <TableRow
@@ -163,18 +163,22 @@ export function CurrenciesPage({currency}: CurrencyProps) {
                             </TableBody>
                         </Table>
                     </TableContainer>
-                    <TablePagination
-                        rowsPerPageOptions={[7, 20, 40, 80, 100, currency.length]}
-                        component="div"
-                        count={currency.length}
-                        rowsPerPage={rowsPerPage}
-                        labelRowsPerPage="Число строк:"
-                        page={page}
-                        onPageChange={handleChangePage}
-                        onRowsPerPageChange={handleChangeRowsPerPage}
-                    />
+                    <div style={{display: 'flex', justifyContent: 'space-between'}}>
+                        <FormControlLabel style={{marginLeft: '8px'}}
+                                          control={<Switch checked={dense} onChange={handleChangeDense}/>}
+                                          label="Компактно"/>
+                        <TablePagination
+                            rowsPerPageOptions={[7, 20, 40, 80, 100, currency.length]}
+                            component="div"
+                            count={currency.length}
+                            rowsPerPage={rowsPerPage}
+                            labelRowsPerPage="Число строк:"
+                            page={page}
+                            onPageChange={handleChangePage}
+                            onRowsPerPageChange={handleChangeRowsPerPage}
+                        />
+                    </div>
                 </Paper>
-                <FormControlLabel control={<Switch checked={dense} onChange={handleChangeDense}/>} label="Compact"/>
             </Box>
         </Container>
     )
